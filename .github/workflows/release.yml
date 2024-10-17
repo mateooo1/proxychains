@@ -1,0 +1,57 @@
+name: Release
+
+on:
+   workflow_dispatch:
+
+jobs:
+  build-linux-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: configure
+        run: ./configure
+
+      - name: Build Proxychains
+        run: make
+
+      - name: Run Proxychains
+        run: ./proxychains4 -v
+
+      - name: Run tests
+        run: ./src/proxychains -f dist/proxychains.conf on
+
+      - name: '📦 Upload'
+    run: |
+        gh release upload ${{github.event.release.tag_name}} proxychains4        
+    env:
+      GITHUB_TOKEN: ${{ github.GHP_TOKEN }}
+    shell: bash
+      # - name: Run tests
+      #   run: ./src/proxychains -f dist/proxychains.conf curl -o /dev/null -v https://sme.sk
+
+      # - name: Run tests
+      #   run: ./src/proxychains -f dist/proxychains.conf ping -c 1 sme.sk
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: configure
+        run: ./configure
+
+      - name: Build Proxychains
+        run: make
+
+      - name: Run Proxychains
+        run: ./proxychains4 -v
+
+      - name: Run tests
+        run: ./src/proxychains -f dist/proxychains.conf on
+
+      # - name: Run tests
+      #   run: ./src/proxychains -f dist/proxychains.conf curl -o /dev/null -v https://sme.sk
+
+      # - name: Run tests
+      #   run: ./src/proxychains -f dist/proxychains.conf ping -t 1 sme.sk
+
