@@ -6,7 +6,7 @@
 .libs/
 .*
 src/*.d
-# Autoconf stuff 
+# Autoconf stuff.
 libtool
 config.*
 stamp-h
